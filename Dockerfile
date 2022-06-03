@@ -1,5 +1,5 @@
 # Use latest minimal-notebook base image from Jupyter Docker stack
-FROM jupyter/minimal-notebook
+FROM jupyter/minimal-notebook:latest
 
 # Meta-data
 LABEL maintainer="Connor Capitolo <connorcapitolo@yahoo.com>" \
@@ -11,9 +11,11 @@ LABEL maintainer="Connor Capitolo <connorcapitolo@yahoo.com>" \
 WORKDIR /app
 
 # && will run the next pip command if the previous one finished successfully
-RUN pip install --no-cache-dir --upgrade pip && pip install pandas numpy matplotlib && pip install seaborn && pip install -U scikit-learn
+RUN pip install --no-cache-dir --upgrade pip
 
 # Add source code
 # you're adding the current directory on your PC (the spaceship-titanic/ folder) to the app/ folder in the Docker container
 # Add the rest of the source code. This is done last so we don't invalidate all layers when we change a line of code.
 ADD . /app
+
+RUN python -m pip install -r /app/requirements.txt
