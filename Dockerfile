@@ -10,7 +10,8 @@ LABEL maintainer="Connor Capitolo <connorcapitolo@yahoo.com>" \
 # source: https://dockerlabs.collabnix.com/beginners/dockerfile/WORKDIR_instruction.html
 WORKDIR /app
 
-RUN pip install pandas numpy matplotlib
+# && will run the next pip command if the previous one finished successfully
+RUN pip install --no-cache-dir --upgrade pip && pip install pandas numpy matplotlib && pip install seaborn && pip install -U scikit-learn
 
 # Add source code
 # you're adding the current directory on your PC (the spaceship-titanic/ folder) to the app/ folder in the Docker container
