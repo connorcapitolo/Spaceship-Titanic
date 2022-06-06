@@ -12,6 +12,12 @@ set -e
 # source: the command 'help export' run in Terminal
 export IMAGE_NAME="connorcapitolo-jupyter"
 
+# Provide authentication credentials to your application code by setting the environment variable GOOGLE_APPLICATION_CREDENTIALS. Setting the environment variable allows you to provide credentials separately from your application, without making changes to application code when you deploy.
+# created this from IAM - > Service Accounts
+# source: https://cloud.google.com/docs/authentication/getting-started#create-service-account-console
+export GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/storage-admin.json
+
+
 # `docker build` is saying to build a Docker image
 # `-t $IMAGE_NAME` is the equivalent of `-t "connorcapitolo-jupyter"`, and it is saying to tag the Docker image that we create from the Dockerfile as with the repository name "connorcapitolo-jupyter"; what this is missing is actually a "tag", which is would be something like "$IMAGE_NAME$:latest to let us know what version of this is being used
 # `-f Dockerfile .` is specifying to look inside the current directory (this is specified by the dot) for the Dockerfile, and the instructions inside the Dockerfile should be executed
@@ -25,4 +31,4 @@ docker build -t $IMAGE_NAME -f Dockerfile .
 # '--name' is the name of the container; the container and the image could have different names b/c you can have multiple containers from a single image
 # the second '$IMAGE_NAME' is what is actually saying to run the image 
 # sources: https://docs.docker.com/engine/reference/commandline/run/#assign-name-and-allocate-pseudo-tty---name--it; https://colab.research.google.com/drive/1zPmsNQ_JmHohoGikzAUpRY0qrmdTnJjg?usp=sharing
-docker run --rm -it -p 8888:8888 -v "$(pwd)/:/app/" $IMAGE_NAME
+docker run --rm -it -p 8888:8888 -v "$(pwd)/:/app/" -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS $IMAGE_NAME
