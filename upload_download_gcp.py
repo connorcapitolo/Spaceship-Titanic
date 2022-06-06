@@ -7,6 +7,7 @@ $ python upload_download_gcp.py
 
 # python standard library modules
 import os
+import sys
 import logging
 import time
 from datetime import datetime
@@ -16,6 +17,18 @@ from datetime import datetime
 # third-party modules
 from google.cloud import storage
 
+# filemode = 'w' means the log file is no longer appended to, so the messages from earlier runs are lost
+logging_filename = 'logger.log'
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s [%(filename)s:%(lineno)d] :: %(message)s',
+                    filename=logging_filename, filemode='w',
+                    encoding='utf-8')
+
+module_description = sys.modules['__main__'] # <module '__main__' from '/Users/connorcapitolo/Desktop/josh_philly_atlas/4_add_logging.py'>
+# splitting the module path, and then getting the name
+# could also just use sys.argv[0] here
+module_name = module_description.__file__.split('/')[-1]
+logging.info(f'Program {module_name} started')
 
 gcp_project = "spaceship-titanic-352419"
 bucket_name = "spaceship-titanic-dataset-bucket"
@@ -26,7 +39,7 @@ dt_string = datetime.now().strftime("%m-%d-%Y_%I-%M%p")
 dataset_location_gcp = f'{dataset_location_local}_{dt_string}'
 
 def upload_files():
-    print("Upload")
+    logging.info("Begin Upload")
     
     storage_client = storage.Client()
     bucket = storage_client.get_bucket(bucket_name)
@@ -37,7 +50,7 @@ def upload_files():
     for filename in os.listdir(f'{dataset_location_local}/'):
         file_to_upload_local_location = os.path.join(
             dataset_location_local, filename)
-        print(f'Uploading local file {file_to_upload_local_location} to GCP...')
+        logging.info(f'Uploading local file {file_to_upload_local_location} to GCP...')
 
         # destination path in GCS
         file_to_upload_gcp_location = os.path.join(
@@ -46,11 +59,13 @@ def upload_files():
         # need to specify where I'm uploading from
         blob.upload_from_filename(file_to_upload_local_location)
 
-        print(
+        logging.info(
             f'Upload complete to GCP bucket {bucket_name} with path of {file_to_upload_gcp_location} complete!')
 
-
-upload_files()
+    logging.info('All uploads completed successfully!!!')
+    
+if __name__=='__main__':
+    upload_files()
 
 '''
 https://cloud.google.com/docs/authentication/getting-started#create-service-account-console
