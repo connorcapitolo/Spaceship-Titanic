@@ -13,8 +13,9 @@ set -e
 export IMAGE_NAME="connorcapitolo-jupyter"
 
 # Provide authentication credentials to your application code by setting the environment variable GOOGLE_APPLICATION_CREDENTIALS. Setting the environment variable allows you to provide credentials separately from your application, without making changes to application code when you deploy.
+# created this from IAM - > Service Accounts
 # source: https://cloud.google.com/docs/authentication/getting-started#create-service-account-console
-export GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/bucket-reader.json
+export GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/storage-admin.json
 
 
 # `docker build` is saying to build a Docker image

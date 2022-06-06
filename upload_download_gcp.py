@@ -7,6 +7,11 @@ $ python upload_download_gcp.py
 
 # python standard library modules
 import os
+import logging
+import time
+from datetime import datetime
+
+# print(os.getcwd()) # /app
 
 # third-party modules
 from google.cloud import storage
@@ -14,7 +19,11 @@ from google.cloud import storage
 
 gcp_project = "spaceship-titanic-352419"
 bucket_name = "spaceship-titanic-dataset-bucket"
-dataset_location = "data"
+
+dataset_location_local = f"data"
+
+dt_string = datetime.now().strftime("%m-%d-%Y_%I-%M%p")
+dataset_location_gcp = f'{dataset_location_local}_{dt_string}'
 
 def upload_files():
     print("Upload")
@@ -22,17 +31,23 @@ def upload_files():
     storage_client = storage.Client()
     bucket = storage_client.get_bucket(bucket_name)
 
+    
+
     # where I'll be uploading files
-    for filename in os.listdir(f'{dataset_location}/'):
-        file_to_upload = os.path.join(dataset_location, filename)
-        print(f'Uploading file {file_to_upload}...')
+    for filename in os.listdir(f'{dataset_location_local}/'):
+        file_to_upload_local_location = os.path.join(
+            dataset_location_local, filename)
+        print(f'Uploading local file {file_to_upload_local_location} to GCP...')
 
         # destination path in GCS
-        blob = bucket.blob(file_to_upload)
+        file_to_upload_gcp_location = os.path.join(
+            dataset_location_gcp, filename)
+        blob = bucket.blob(file_to_upload_gcp_location)
         # need to specify where I'm uploading from
-        blob.upload_from_filename(file_to_upload)
+        blob.upload_from_filename(file_to_upload_local_location)
 
-        print(f'Upload of {file_to_upload} complete!')
+        print(
+            f'Upload complete to GCP bucket {bucket_name} with path of {file_to_upload_gcp_location} complete!')
 
 
 upload_files()
