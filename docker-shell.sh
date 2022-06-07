@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # since this file is being run as an executable in a Unix operating system, the shebang (#!) lets the program loader mechanism know that the rest of the line should be run as an interpreter directive/executable; it specifies what program should be called to run the script
 # in this particular case, /bin/bash is the most common shell (a shell allows you to run programs, give them input, and inspect their output in a semi-structured way) for user login of the Linux system. The term 'bash' is an acronym for Bourne-again shell, and it can access the vast majority of scripts since it is well developed with good syntax and features
