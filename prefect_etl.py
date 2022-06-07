@@ -106,5 +106,6 @@ with Flow("First ETL Spaceship Flow") as f:
     results = create_model_output(df_dict)
     save_dataframe(results)
 
-f.run()
-# f.visualize() # tracking dependencies
+# f.run()
+# tracking dependencies; GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
+f.visualize(filename='visualize_etl')
