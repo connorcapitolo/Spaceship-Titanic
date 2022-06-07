@@ -143,7 +143,7 @@ def save_dataframe(results: List, column: str = 'normalize_remove_na'):
 
     model_results = pd.DataFrame(df_model_means, index=models.keys())
 
-    return model_results.to_csv('prefect_output.csv')
+    return model_results.to_csv('prefect_output.csv', index_label='Models')
 
 with Flow("First ETL Spaceship Flow") as f:
 
@@ -153,9 +153,9 @@ with Flow("First ETL Spaceship Flow") as f:
     save_dataframe(results)
 
 if __name__=='__main__':
-    # f.run()
+    f.run()
 
     # GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
-    f.visualize(filename='visualize_etl') # tracking dependencies;
+    # f.visualize(filename='visualize_etl') # tracking dependencies;
 
 
