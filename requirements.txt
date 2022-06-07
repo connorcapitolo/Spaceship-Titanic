@@ -8,3 +8,4 @@ matplotlib
 scikit-learn
 seaborn
 google-cloud-storage
+prefect
