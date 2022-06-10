@@ -33,11 +33,11 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import _helper
 
 # model parameters
-seed = 7
+seed       =7
 n_splits = 5
 random_state = 109
 test_size = 0.2
-scoring = "accuracy"
+scoring = 'accuracy'
 
 # prepare models
 models = []
