@@ -11,4 +11,4 @@ google-cloud-storage
 prefect
 black
 black[jupyter]
-precommit
+pre-commit
