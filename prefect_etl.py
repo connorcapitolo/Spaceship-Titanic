@@ -7,8 +7,10 @@ The module loads in the Spaceship Titanic dataframe, performs the necessary prep
     $ python prefect_etl.py
 """
 
-# standard library packages
+# python standard library packages
 from typing import List, Dict, Tuple
+import os
+import sys
 
 # third-party packages
 from prefect import task, Flow
@@ -31,6 +33,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # my modules
 import _helper
+import upload_download_gcp
 
 # model parameters
 seed = 7
@@ -38,6 +41,7 @@ n_splits = 5
 random_state = 109
 test_size = 0.2
 scoring = "accuracy"
+data_folder_name = "data"
 
 # prepare models
 models = []
@@ -52,16 +56,21 @@ models.append(("ABM", AdaBoostClassifier()))
 
 # extract
 @task
-def load_dataset(path_name: str = "data/train.csv") -> pd.DataFrame:
-    """Loads in the Spacheship Titanic dataset used to the train the model
+def load_dataset(path_name: str = "train.csv") -> pd.DataFrame:
+    """Downloads the train.csv from GCP and loads into memory the Spacheship Titanic dataset used to the train the model
 
     Args:
-        path_name: path for obtaining the model
+        path_name: name of the csv file for obtaining the model locally
 
     Returns:
         The Pandas DataFrame that is the training data
     """
-    df = pd.read_csv(path_name)
+    upload_download_gcp.download_files()
+
+    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data'
+
+    df = pd.read_csv(os.path.join(source_data_path, path_name))
+
     return df
 
 
