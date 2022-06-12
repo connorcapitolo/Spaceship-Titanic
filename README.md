@@ -4,6 +4,7 @@
 
 Since adding [pre-commit](https://pre-commit.com/), Git must be used within the Jupyter Notebook container, as that is what contains the `pre-commit` and `black` packages
 * placed the basic *git config* credentials within `Dockerfile`
+* may need to run `pre-commit install` when running Docker image for the first time
 
 ## How to Run
 

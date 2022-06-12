@@ -32,8 +32,8 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # my modules
-import _helper
-import upload_download_gcp
+import src.spaceship_titanic.features._helper as _helper
+import src.spaceship_titanic.data.upload_download_gcp as upload_download_gcp
 
 # print(upload_download_gcp.bucket_name) bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
 
