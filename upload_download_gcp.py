@@ -82,7 +82,7 @@ if __name__ == "__main__":
     module_name = module_description.__file__.split("/")[-1]
     logging.info(f"Program {module_name} started")
 
-    dataset_location_local = f"data"
+    dataset_location_local = "data/raw"
 
     dt_string = datetime.now().strftime("%m-%d-%Y_%I-%M%p")
     dataset_location_gcp = f"{dataset_location_local}_{dt_string}"
