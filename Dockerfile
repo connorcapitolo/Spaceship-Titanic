@@ -22,3 +22,6 @@ RUN conda install python-graphviz
 
 # && will run the next pip command if the previous one finished successfully
 RUN python -m pip install -r /app/requirements.txt && pip install "prefect[viz]"
+# would typically need to "RUN pre-commit install", but since we've mounted the local path, this only needs to be done the first time (could set up a check to see if this is done"
+# source: https://stackoverflow.com/questions/68754821/how-to-pre-install-pre-commit-into-hooks-into-docker
+
