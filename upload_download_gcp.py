@@ -20,7 +20,7 @@ from google.cloud import storage
 gcp_project = "spaceship-titanic-352419"
 bucket_name = "spaceship-titanic-dataset-bucket"
 prefix_path = "data_06-06-2022_11-12PM"
-data_folder_name = "data"
+data_folder_name = "data/raw"
 
 
 def upload_files():
@@ -48,7 +48,7 @@ def upload_files():
 
 
 def download_files(file_to_download: str = "train.csv"):
-    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data'
+    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
     if not os.path.exists(source_data_path):
         os.mkdir(source_data_path)
 

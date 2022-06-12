@@ -41,7 +41,8 @@ n_splits = 5
 random_state = 109
 test_size = 0.2
 scoring = "accuracy"
-data_folder_name = "data"
+data_folder_name = "data/raw"
+model_folder_name = "models"
 
 # prepare models
 models = []
@@ -67,7 +68,7 @@ def load_dataset(path_name: str = "train.csv") -> pd.DataFrame:
     """
     upload_download_gcp.download_files()
 
-    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data'
+    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
 
     df = pd.read_csv(os.path.join(source_data_path, path_name))
 
@@ -155,7 +156,11 @@ def create_model_output(df: Tuple) -> List:
 
 # load
 @task
-def save_dataframe(results: List, column: str = "normalize_remove_na"):
+def save_dataframe(
+    results: List,
+    column: str = "normalize_remove_na",
+    csv_name: str = "prefect_model_summary.csv",
+):
     """Find the mean from the k-fold cross validation for each model, and saves it to a csv file
 
     Args:
@@ -171,6 +176,10 @@ def save_dataframe(results: List, column: str = "normalize_remove_na"):
         SVM,0.7975
     """
 
+    source_model_path = os.path.join(os.getcwd(), model_folder_name)  # '/app/models'
+    if not os.path.exists(source_model_path):
+        os.mkdir(source_model_path)
+
     # dictionary where df_name is key, and list of results is value
     df_model_means = {}
 
@@ -185,7 +194,9 @@ def save_dataframe(results: List, column: str = "normalize_remove_na"):
         df_model_means, index=[get_model_names[0] for get_model_names in models]
     )
 
-    return model_results.to_csv("prefect_output.csv", index_label="Models")
+    return model_results.to_csv(
+        os.path.join(source_model_path, csv_name), index_label="Models"
+    )
 
 
 with Flow("First ETL Spaceship Flow") as f:
