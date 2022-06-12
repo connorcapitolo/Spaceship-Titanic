@@ -35,6 +35,8 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import _helper
 import upload_download_gcp
 
+# print(upload_download_gcp.bucket_name) bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
+
 # model parameters
 seed = 7
 n_splits = 5
@@ -207,7 +209,7 @@ with Flow("First ETL Spaceship Flow") as f:
     save_dataframe(results)
 
 if __name__ == "__main__":
-    f.run()
+    # f.run()
 
     # GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
-    # f.visualize(filename='visualize_etl') # tracking dependencies;
+    f.visualize(filename="/app/reports/figures/visualize_etl")  # tracking dependencies;
