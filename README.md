@@ -16,7 +16,17 @@ $ sh docker-shell.sh
 
 2. Copy and paste the link into your browser that begins with `127.0.0.1`. For example, it will look like `http://127.0.0.1:8888/lab?token=3a991c83fe52a85611ba3d8d5215499fe6a6d859f598798b`
 
-3. Have some fun and play around!
+3. From Jupyterlab, use the Terminal to navigate to the src folder
+
+```
+cd src
+```
+
+4. Run the Prefect pipeline
+
+```
+python -m spaceship_titanic
+```
 
 ## Steps Taken
 
