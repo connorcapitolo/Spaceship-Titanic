@@ -17,8 +17,12 @@ RUN pip install --no-cache-dir --upgrade pip
 # Add the rest of the source code. This is done last so we don't invalidate all layers when we change a line of code.
 ADD . /app
 
+# adding my basic git credentials
+# could also pass this as environment variables into docker-shell.sh
+RUN git config --global user.email "connorcapitolo@yahoo.com" && git config --global user.name "connorcapitolo"
+
 # using .visualize() method was giving errors with graphviz executable if I tried to use "pip-install graphviz", and would give a permission and password error when trying "apt-get install graphviz" (with or without sudo)
-RUN conda install python-graphviz
+# RUN conda install python-graphviz
 
 # && will run the next pip command if the previous one finished successfully
 RUN python -m pip install -r /app/requirements.txt && pip install "prefect[viz]"
