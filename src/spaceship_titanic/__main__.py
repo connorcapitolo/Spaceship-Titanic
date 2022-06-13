@@ -2,9 +2,9 @@
 
 The module loads in the Spaceship Titanic dataframe, performs the necessary preprocessing to get it in a format that can be used for modeling, trains model(s), and then saves the accuracy score
 
-    Typical usage example from Terminal in JupyterLab:
+    Typical usage example from JupyterLab's Terminal within the src/ folder:
 
-    $ python prefect_etl.py
+    $ python -m spaceship_titanic
 """
 
 # python standard library packages
@@ -34,10 +34,9 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # my modules
 from spaceship_titanic import _helper
 from spaceship_titanic import upload_download_gcp
-import spaceship_titanic
 
-print(spaceship_titanic.hello)
-
+# import spaceship_titanic
+# print(spaceship_titanic.hello)
 # print(upload_download_gcp.bucket_name) bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
 
 # model parameters
@@ -217,4 +216,4 @@ if __name__ == "__main__":
     f.run()
 
     # GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
-    # f.visualize(filename="/app/reports/figures/visualize_etl")  # tracking dependencies;
+    # f.visualize(filename="/app/reports/figures/visualize_etl.pdf")  # tracking dependencies;

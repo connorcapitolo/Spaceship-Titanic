@@ -2,9 +2,11 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+Directory structure is based on [CookieCutter](https://drivendata.github.io/cookiecutter-data-science/)
+
 Since adding [pre-commit](https://pre-commit.com/), Git must be used within the Jupyter Notebook container, as that is what contains the `pre-commit` and `black` packages
-* placed the basic *git config* credentials within `Dockerfile`
-* may need to run `pre-commit install` when running Docker image for the first time
+* may need to run `pre-commit install` from the JupyterLab Terminal when running Docker image for the first time
+* note that the assumption is your Git username and email exist within your *~/.gitconfig* file (at the global level, e.g. you should these when you run `git config --global --list`)
 
 ## How to Run
 

@@ -27,8 +27,10 @@ docker build -t $IMAGE_NAME -f Dockerfile .
 # `docker run` is specifying to run a Docker container
 #  `--rm --name $IMAGE_NAME` is saying to delete the container $IMAGE_NAME when it has stopped running
 # '-v' is saying to mount a volume; we are mounting the current working directory into the container, so even if we put anything in this particular folder (spaceship-titanic/) it will be seen in the container; this will allow us to see any Notebook updates reflected on our local machine
+# adding my basic global git credentials that contain my username and email (not my password)
+# source: https://stackoverflow.com/questions/52819584/copying-local-git-config-into-docker-container
 # '-it' instructs Docker to allocate a pseudo-TTY connected to the container’s stdin; creating an interactive bash shell in the container
 # '--name' is the name of the container; the container and the image could have different names b/c you can have multiple containers from a single image
 # the second '$IMAGE_NAME' is what is actually saying to run the image 
 # sources: https://docs.docker.com/engine/reference/commandline/run/#assign-name-and-allocate-pseudo-tty---name--it; https://colab.research.google.com/drive/1zPmsNQ_JmHohoGikzAUpRY0qrmdTnJjg?usp=sharing
-docker run --rm -it -p 8888:8888 -v "$(pwd)/:/app/" -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS $IMAGE_NAME
+docker run --rm -it -p 8888:8888 -v "$(pwd)/:/app/" -v ~/.gitconfig:/etc/gitconfig -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS $IMAGE_NAME
