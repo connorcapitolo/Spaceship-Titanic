@@ -5,16 +5,24 @@
 Directory structure is based on [CookieCutter](https://drivendata.github.io/cookiecutter-data-science/)
 
 Since adding [pre-commit](https://pre-commit.com/), Git must be used within the Jupyter Notebook container, as that is what contains the `pre-commit` and `black` packages
-* may need to run `pre-commit install` from the JupyterLab Terminal when running Docker image for the first time
+* need to run `pre-commit install` from the JupyterLab Terminal when running Docker image for the first time since we've mounted the source path
 * note that the assumption is your Git username and email exist within your *~/.gitconfig* file (at the global level, e.g. you should these when you run `git config --global --list`)
 
 ## How to Run
 
-1. In a terminal (if you're on Mac),
+1. In a Terminal run either
 
 ```
 $ sh docker-shell.sh
 ```
+
+or
+
+```
+$ sh docker-shell.sh viz
+```
+
+The former will not allow you to use Prefect's [Flow Visualization](https://docs.prefect.io/core/advanced_tutorials/visualization.html), while the latter will (it takes about a minute longer to build the Docker image)
 
 2. Copy and paste the link into your browser that begins with `127.0.0.1`. For example, it will look like `http://127.0.0.1:8888/lab?token=3a991c83fe52a85611ba3d8d5215499fe6a6d859f598798b`
 

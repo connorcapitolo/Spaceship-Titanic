@@ -216,4 +216,4 @@ if __name__ == "__main__":
     f.run()
 
     # GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
-    # f.visualize(filename="/app/reports/figures/visualize_etl.pdf")  # tracking dependencies;
+    # f.visualize(filename="/app/reports/figures/visualize_etl")  # tracking dependencies;

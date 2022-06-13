@@ -17,12 +17,20 @@ export IMAGE_NAME="connorcapitolo-jupyter"
 # source: https://cloud.google.com/docs/authentication/getting-started#create-service-account-console
 export GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/storage-admin.json
 
-
+# `DOCKER_BUILDKIT=1` enables Docker BuildKit
+# standard Docker build command performs builds on Dockerfiles serially, which means it reads and builds each line or layer of the Dockerfile one layer at a time. When BuildKit is enabled, it allows for parallel build processing resulting in better performance and faster build times
+# source: https://brianchristner.io/what-is-docker-buildkit/
 # `docker build` is saying to build a Docker image
 # `-t $IMAGE_NAME` is the equivalent of `-t "connorcapitolo-jupyter"`, and it is saying to tag the Docker image that we create from the Dockerfile as with the repository name "connorcapitolo-jupyter"; what this is missing is actually a "tag", which is would be something like "$IMAGE_NAME$:latest to let us know what version of this is being used
+# `--build-arg` means that the BUILD_VERSION argument will be set to "viz", rather than it's default of "no-viz"
+# source: https://vsupalov.com/docker-env-vars/
 # `-f Dockerfile .` is specifying to look inside the current directory (this is specified by the dot) for the Dockerfile, and the instructions inside the Dockerfile should be executed
 # source: https://colab.research.google.com/drive/1zPmsNQ_JmHohoGikzAUpRY0qrmdTnJjg?usp=sharing
-docker build -t $IMAGE_NAME -f Dockerfile .
+if [ -z "$1" ]; then
+    DOCKER_BUILDKIT=1 docker build -t $IMAGE_NAME -f Dockerfile .
+else
+    DOCKER_BUILDKIT=1 docker build -t $IMAGE_NAME --build-arg BUILD_VERSION=viz -f Dockerfile .
+fi
 
 # `docker run` is specifying to run a Docker container
 #  `--rm --name $IMAGE_NAME` is saying to delete the container $IMAGE_NAME when it has stopped running
