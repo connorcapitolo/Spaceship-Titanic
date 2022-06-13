@@ -2,9 +2,9 @@
 
 The module loads in the Spaceship Titanic dataframe, performs the necessary preprocessing to get it in a format that can be used for modeling, trains model(s), and then saves the accuracy score
 
-    Typical usage example from Terminal in JupyterLab:
+    Typical usage example from JupyterLab's Terminal within the src/ folder:
 
-    $ python prefect_etl.py
+    $ python -m spaceship_titanic
 """
 
 # python standard library packages
@@ -32,9 +32,11 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # my modules
-import _helper
-import upload_download_gcp
+from spaceship_titanic import _helper
+from spaceship_titanic import upload_download_gcp
 
+# import spaceship_titanic
+# print(spaceship_titanic.hello)
 # print(upload_download_gcp.bucket_name) bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
 
 # model parameters
@@ -70,7 +72,8 @@ def load_dataset(path_name: str = "train.csv") -> pd.DataFrame:
     """
     upload_download_gcp.download_files()
 
-    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
+    # source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
+    source_data_path = "/app/data/raw"
 
     df = pd.read_csv(os.path.join(source_data_path, path_name))
 
@@ -178,7 +181,8 @@ def save_dataframe(
         SVM,0.7975
     """
 
-    source_model_path = os.path.join(os.getcwd(), model_folder_name)  # '/app/models'
+    # source_model_path = os.path.join(os.getcwd(), model_folder_name)  # '/app/models'
+    source_model_path = os.path.join("/app/models", model_folder_name)
     if not os.path.exists(source_model_path):
         os.mkdir(source_model_path)
 
@@ -209,7 +213,7 @@ with Flow("First ETL Spaceship Flow") as f:
     save_dataframe(results)
 
 if __name__ == "__main__":
-    # f.run()
+    f.run()
 
     # GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
-    f.visualize(filename="/app/reports/figures/visualize_etl")  # tracking dependencies;
+    # f.visualize(filename="/app/reports/figures/visualize_etl")  # tracking dependencies;

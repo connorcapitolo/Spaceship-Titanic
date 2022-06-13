@@ -48,7 +48,8 @@ def upload_files():
 
 
 def download_files(file_to_download: str = "train.csv"):
-    source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
+    # source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
+    source_data_path = "/app/data/raw"
     if not os.path.exists(source_data_path):
         os.mkdir(source_data_path)
 
