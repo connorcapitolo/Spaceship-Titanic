@@ -1,0 +1,8 @@
+Models,normalize_remove_na
+LR,0.7962
+LDA,0.7953
+KNN,0.7691
+SVM,0.7962
+RF,0.7867
+GBM,0.796
+ABM,0.7902
