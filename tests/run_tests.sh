@@ -3,8 +3,8 @@
 # list of test cases you want to run
 tests=(
        # test_other_things_on_root_level.py
-       test_data.py
-       # subpkg_2/test_module_3.py
+       test_data_included.py
+       test_data_not_included.py
 )
 
 # we must add the module source path because we use `import cs107_package` in our test suite and we
@@ -12,6 +12,10 @@ tests=(
 # pwd -P: Print the current directory, and resolve all symlinks (i.e. show the "physical" path)
 export PYTHONPATH="$(pwd -P)/../src":${PYTHONPATH}
 
-python -m pytest ${tests[@]} # will expand all the elements in the tests list
-# could also do "$ python -m pytest ."
+# if we call "bash run_tests.sh include, then will run both tests"
+if [ $# -ge 1 ]; then
+       python -m pytest ${tests[@]} # will expand all the elements in the tests list
+else
+       python -m pytest ${tests[0]} # will only run first element of tests list
+fi
 

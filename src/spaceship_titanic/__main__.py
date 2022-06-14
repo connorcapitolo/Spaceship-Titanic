@@ -181,7 +181,7 @@ def save_dataframe(
     """
 
     # source_model_path = os.path.join(os.getcwd(), model_folder_name)  # '/app/models'
-    source_model_path = os.path.join("/app/models", model_folder_name)
+    source_model_path = os.path.join("/app", model_folder_name)
     if not os.path.exists(source_model_path):
         os.mkdir(source_model_path)
 
