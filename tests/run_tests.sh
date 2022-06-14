@@ -12,7 +12,8 @@ tests=(
 # pwd -P: Print the current directory, and resolve all symlinks (i.e. show the "physical" path)
 export PYTHONPATH="$(pwd -P)/../src":${PYTHONPATH}
 
-# if we call "bash run_tests.sh include, then will run both tests"
+# if we call "bash run_tests.sh include" from Terminal, then will run both tests
+# if we call "bash run_tests.sh" from Terminal, will only run test with the data included
 if [ $# -ge 1 ]; then
        python -m pytest ${tests[@]} # will expand all the elements in the tests list
 else

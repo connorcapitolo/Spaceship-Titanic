@@ -3,7 +3,13 @@
 
 name: Python package
 
-on: [push]
+# default-branch is just my 'main' branch
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
 jobs:
   build:
 
@@ -30,6 +36,6 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest with run_tests.sh within tests directory
+    - name: pytest using run_tests.sh Bash script by navigating to tests/ directory
       run: bash run_tests.sh
       working-directory: ./tests
