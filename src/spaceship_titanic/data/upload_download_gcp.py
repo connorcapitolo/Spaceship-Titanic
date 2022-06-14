@@ -50,8 +50,9 @@ def upload_files():
 def download_files(file_to_download: str = "train.csv"):
     # source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
     source_data_path = "/app/data/raw"
-    if not os.path.exists(source_data_path):
-        os.mkdir(source_data_path)
+    if not os.path.exists(os.path.join(os.getcwd(), "../data")):
+        os.mkdir("../data")
+        os.mkdir("../data/raw")
 
     storage_client = storage.Client(project=gcp_project)
     bucket = storage_client.get_bucket(bucket_name)
@@ -59,7 +60,9 @@ def download_files(file_to_download: str = "train.csv"):
     for blob in blobs:
         # print(blob.name)
         if blob.name.endswith(file_to_download):
-            blob.download_to_filename(os.path.join(source_data_path, file_to_download))
+            blob.download_to_filename(
+                os.path.join(os.path.join(os.getcwd(), "../data/raw"), file_to_download)
+            )
 
 
 if __name__ == "__main__":

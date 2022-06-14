@@ -73,9 +73,8 @@ def load_dataset(path_name: str = "train.csv") -> pd.DataFrame:
     upload_download_gcp.download_files()
 
     # source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
-    source_data_path = "/app/data/raw"
 
-    df = pd.read_csv(os.path.join(source_data_path, path_name))
+    df = pd.read_csv(os.path.join(os.path.join(os.getcwd(), "../data/raw"), path_name))
 
     return df
 
