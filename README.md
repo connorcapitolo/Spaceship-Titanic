@@ -2,11 +2,13 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Directory structure is based on [CookieCutter](https://drivendata.github.io/cookiecutter-data-science/)
+Directory structure is based on [CookieCutter Data Science](https://drivendata.github.io/cookiecutter-data-science/)
+
+### Note on Git
 
 Since adding [pre-commit](https://pre-commit.com/), Git must be used within the Jupyter Notebook container, as that is what contains the `pre-commit` and `black` packages
-* need to run `pre-commit install` from the JupyterLab Terminal when running Docker image for the first time since we've mounted the source path
-* note that the assumption is your Git username and email exist within your *~/.gitconfig* file (at the global level, e.g. you should these when you run `git config --global --list`)
+* When running Docker image for the first time, need to run `pre-commit install` from the JupyterLab Terminal since we've mounted the source path
+* note that the assumption is your Git username and email exist within your *~/.gitconfig* file (at the global level, e.g. you should see both of these when you run `git config --global --list`)
 
 ## How to Run
 
@@ -65,3 +67,8 @@ bash run_tests.sh include
 The former will only use the provided data within the repository, while the latter will look to download the data from the GCP bucket (please note this is not available to external users)
 
 ## GCP Buckets For Uploading/Retrieving Data
+
+Follow the steps for [Setting Up GCP Service Account and Credentials](https://github.com/dlops-io/mushroom-app/tree/02-setup-gcp-credentials)
+
+* **Note**: The role to be selected should be *Storage Object Admin* so you can upload and download to the GCP bucket, rather than *Storage Object Viewer*
+* You can see the *GOOGLE_APPLICATION_CREDENTIALS* environment variable within `docker_shell.sh` (GCP will search for this and utilize it when necessary)

@@ -9,10 +9,7 @@ $ python upload_download_gcp.py
 import os
 import sys
 import logging
-import time
 from datetime import datetime
-
-# print(os.getcwd()) # /app
 
 # third-party modules
 from google.cloud import storage
