@@ -1,0 +1,17 @@
+# Initializing certain variables that are common across scripts
+
+[parent-directory]
+data = "../data"
+data_raw = "../data/raw"
+
+[model-parameters]
+n_splits = 5
+random_state = 109
+test_size = 0.2
+scoring = "accuracy"
+model_folder_name = "models"
+
+[gcp-related]
+gcp_project = "spaceship-titanic-352419"
+bucket_name = "spaceship-titanic-dataset-bucket"
+prefix_path = "data_06-06-2022_11-12PM"

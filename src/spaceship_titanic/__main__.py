@@ -34,19 +34,10 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # my modules
 from spaceship_titanic import _helper
 from spaceship_titanic import upload_download_gcp
+import spaceship_titanic
 
-# import spaceship_titanic
 # print(spaceship_titanic.hello)
 # print(upload_download_gcp.bucket_name) bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
-
-# model parameters
-seed = 7
-n_splits = 5
-random_state = 109
-test_size = 0.2
-scoring = "accuracy"
-data_folder_name = "data/raw"
-model_folder_name = "models"
 
 # prepare models
 models = []
@@ -72,9 +63,11 @@ def load_dataset(path_name: str = "train.csv") -> pd.DataFrame:
     """
     upload_download_gcp.download_files()
 
-    # source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
-
-    df = pd.read_csv(os.path.join(os.path.join(os.getcwd(), "../data/raw"), path_name))
+    df = pd.read_csv(
+        os.path.join(
+            os.path.join(os.getcwd(), spaceship_titanic.data_raw_dir), path_name
+        )
+    )
 
     return df
 
@@ -109,8 +102,8 @@ def transform_dataset(df: pd.DataFrame) -> Tuple:
     X_train, X_test, y_train, y_test = train_test_split(
         numeric_columns_remove_na.drop("Transported", axis=1),
         numeric_columns_remove_na["Transported"],
-        test_size=test_size,
-        random_state=random_state,
+        test_size=spaceship_titanic.test_size,
+        random_state=spaceship_titanic.random_state,
     )
 
     return (X_train, X_test, y_train, y_test)
@@ -145,10 +138,17 @@ def create_model_output(df: Tuple) -> List:
 
         # define the evaluation procedure
         kfold = model_selection.KFold(
-            n_splits=n_splits, shuffle=True, random_state=random_state
+            n_splits=spaceship_titanic.n_splits,
+            shuffle=True,
+            random_state=spaceship_titanic.random_state,
         )
         cv_results = model_selection.cross_val_score(
-            pipeline, X_train, y_train, cv=kfold, scoring=scoring, n_jobs=-1
+            pipeline,
+            X_train,
+            y_train,
+            cv=kfold,
+            scoring=spaceship_titanic.scoring,
+            n_jobs=-1,
         )
         # report performance
         print(f"{name}: {cv_results.mean():.4f}, {cv_results.std():.4f}")
@@ -180,8 +180,7 @@ def save_dataframe(
         SVM,0.7975
     """
 
-    # source_model_path = os.path.join(os.getcwd(), model_folder_name)  # '/app/models'
-    source_model_path = os.path.join("/app", model_folder_name)
+    source_model_path = os.path.join("/app", spaceship_titanic.model_folder_name)
     if not os.path.exists(source_model_path):
         os.mkdir(source_model_path)
 

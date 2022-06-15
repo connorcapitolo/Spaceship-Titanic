@@ -14,17 +14,15 @@ from datetime import datetime
 # third-party modules
 from google.cloud import storage
 
-gcp_project = "spaceship-titanic-352419"
-bucket_name = "spaceship-titanic-dataset-bucket"
-prefix_path = "data_06-06-2022_11-12PM"
-data_folder_name = "data/raw"
+# my modules
+import spaceship_titanic
 
 
 def upload_files():
     logging.info("Begin Upload")
 
     storage_client = storage.Client()
-    bucket = storage_client.get_bucket(bucket_name)
+    bucket = storage_client.get_bucket(spaceship_titanic.bucket_name)
 
     # where I'll be uploading files
     for filename in os.listdir(f"{dataset_location_local}/"):
@@ -38,26 +36,29 @@ def upload_files():
         blob.upload_from_filename(file_to_upload_local_location)
 
         logging.info(
-            f"Upload complete to GCP bucket {bucket_name} with path of {file_to_upload_gcp_location} complete!"
+            f"Upload complete to GCP bucket {spaceship_titanic.bucket_name} with path of {file_to_upload_gcp_location} complete!"
         )
 
     logging.info("All uploads completed successfully!!!")
 
 
 def download_files(file_to_download: str = "train.csv"):
-    # source_data_path = os.path.join(os.getcwd(), data_folder_name)  # '/app/data/raw'
-    if not os.path.exists(os.path.join(os.getcwd(), "../data")):
-        os.mkdir("../data")
-        os.mkdir("../data/raw")
 
-    storage_client = storage.Client(project=gcp_project)
-    bucket = storage_client.get_bucket(bucket_name)
-    blobs = bucket.list_blobs(prefix=f"{prefix_path}/")
+    if not os.path.exists(os.path.join(os.getcwd(), spaceship_titanic.data_dir)):
+        os.mkdir(spaceship_titanic.data_dir)
+        os.mkdir(spaceship_titanic.data_raw_dir)
+
+    storage_client = storage.Client(project=spaceship_titanic.gcp_project)
+    bucket = storage_client.get_bucket(spaceship_titanic.bucket_name)
+    blobs = bucket.list_blobs(prefix=f"{spaceship_titanic.prefix_path}/")
     for blob in blobs:
         # print(blob.name)
         if blob.name.endswith(file_to_download):
             blob.download_to_filename(
-                os.path.join(os.path.join(os.getcwd(), "../data/raw"), file_to_download)
+                os.path.join(
+                    os.path.join(os.getcwd(), spaceship_titanic.data_raw_dir),
+                    file_to_download,
+                )
             )
 
 

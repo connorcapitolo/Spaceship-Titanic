@@ -13,3 +13,4 @@ prefect
 black
 black[jupyter]
 pre-commit
+tomli
