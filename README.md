@@ -10,7 +10,7 @@ Since adding [pre-commit](https://pre-commit.com/), Git must be used within the 
 
 ## How to Run
 
-1. In a Terminal run either
+1. In a Terminal on your host machine, run either
 
 ```
 $ sh docker-shell.sh
@@ -26,34 +26,42 @@ The former will not allow you to use Prefect's [Flow Visualization](https://docs
 
 2. Copy and paste the link into your browser that begins with `127.0.0.1`. For example, it will look like `http://127.0.0.1:8888/lab?token=3a991c83fe52a85611ba3d8d5215499fe6a6d859f598798b`
 
-3. From Jupyterlab, use the Terminal to navigate to the src folder
+3. From JupyterLab, use its provided Terminal to navigate to the `src` folder
 
 ```
-cd src
+$ cd src
 ```
 
-4. Run the Prefect pipeline
+4. From the JupyterLab Terminal, run the Prefect pipeline
 
 ```
-python -m spaceship_titanic
+$ python -m spaceship_titanic
 ```
 
-## Steps Taken
+## Testing
 
-* set up a Docker container to run the jupyter notebook
-	* this includes the Dockerfile and docker-shell.sh for ease-of-use
-* load in data and do initial exploration with Pandas
-* create visualizations for EDA with matplotlib and seaborn
-* handle missing data by removing or filling in with median (only use numeric columns so far)
-* create a pytest file to remind myself on testing
-* reconfigure directory structure with my notebook, testing, and data
-* perform standardization and normalization
-* get some output to compare models against
-	* since it's a balanced binary classification problem, will just stick with using accuracy (also since the Kaggle competition uses accuracy)
-* Figure out how to connect to GCP with the `upload_download_gcp.py`
-* Add some basic logging to `upload_download_gcp.py`
-* Add Prefect for a basic ETL pipeline `prefect_etl.py`
-* Add some documentation based on Google's Python Style Guide `prefect_etl.py`
+This repository utilizes [pytest](https://docs.pytest.org/en/7.1.x/) for testing purposes
 
-## Next Steps
-* look to add additional security pieces based on the Mushroom AC215 data-collector and api-service Dockerfiles and docker-shell.sh
+1. Make sure you have completed through step 2 from the `How to Run` section
+
+2. From JupyterLab, use its provided Terminal to navigate to the `tests` folder
+
+```
+$ cd tests
+```
+
+3. From the JupyterLab Terminal, run either 
+
+```
+bash run_tests.sh
+```
+
+or 
+
+```
+bash run_tests.sh include
+```
+
+The former will only use the provided data within the repository, while the latter will look to download the data from the GCP bucket (please note this is not available to external users)
+
+## GCP Buckets For Uploading/Retrieving Data
