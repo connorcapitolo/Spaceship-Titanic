@@ -34,11 +34,19 @@ The former will not allow you to use Prefect's [Flow Visualization](https://docs
 $ cd src
 ```
 
-4. From the JupyterLab Terminal, run the Prefect pipeline
+4. From the JupyterLab Terminal, run the Prefect pipeline either
 
 ```
 $ python -m spaceship_titanic
 ```
+
+or 
+
+```
+$ python -m spaceship_titanic -d
+```
+
+The former utilizes the `data/raw/train.csv` file, while the latter downloads the training dataset from a GCP bucket
 
 ## Testing
 

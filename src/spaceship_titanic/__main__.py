@@ -10,6 +10,7 @@ The module loads in the Spaceship Titanic dataframe, performs the necessary prep
 # python standard library packages
 from typing import List, Tuple
 import os
+import argparse
 
 # third-party packages
 from prefect import task, Flow
@@ -44,25 +45,30 @@ models = []
 models.append(("LR", LogisticRegression()))
 models.append(("LDA", LinearDiscriminantAnalysis()))
 models.append(("KNN", KNeighborsClassifier()))
-models.append(("SVM", SVC()))
+models.append(("SVM", SVC(random_state=spaceship_titanic.random_state)))
 models.append(
     ("RF", RandomForestClassifier(random_state=spaceship_titanic.random_state))
 )
-models.append(("GBM", GradientBoostingClassifier()))
-models.append(("ABM", AdaBoostClassifier()))
+models.append(
+    ("GBM", GradientBoostingClassifier(random_state=spaceship_titanic.random_state))
+)
+models.append(("ABM", AdaBoostClassifier(random_state=spaceship_titanic.random_state)))
 
 # extract
 @task
-def load_dataset(path_name: str = "train.csv") -> pd.DataFrame:
+def load_dataset(download_dataset: bool, path_name: str = "train.csv") -> pd.DataFrame:
     """Downloads the train.csv from GCP and loads into memory the Spacheship Titanic dataset used to the train the model
 
     Args:
+        download_dataset: whether or not to download training set from GCP bucket
         path_name: name of the csv file for obtaining the model locally
 
     Returns:
         The Pandas DataFrame that is the training data
     """
-    upload_download_gcp.download_files()
+
+    if download_dataset:
+        upload_download_gcp.download_files()
 
     df = pd.read_csv(
         os.path.join(
@@ -204,14 +210,27 @@ def save_dataframe(
     )
 
 
-with Flow("First ETL Spaceship Flow") as f:
-
-    df = load_dataset()
-    df_dict = transform_dataset(df)
-    results = create_model_output(df_dict)
-    save_dataframe(results)
-
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(
+        description="An introductory ETL (extract-transform-load) pipeline utilizing Prefect"
+    )
+
+    parser.add_argument(
+        "-d",
+        "--download",
+        action="store_true",
+        help="Whether or not to download training set from the GCP bucket",
+    )
+
+    args = parser.parse_args()
+
+    with Flow("First ETL Spaceship Flow") as f:
+        df = load_dataset(args.download)
+        df_dict = transform_dataset(df)
+        results = create_model_output(df_dict)
+        save_dataframe(results)
+
     f.run()
 
     # GitHub location: https://github.com/PrefectHQ/prefect/blob/6a69b3c618de71fd0ef154b14ff408fe9fb3af2d/src/prefect/core/flow.py#L1310
