@@ -34,6 +34,9 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Make sure that the spaceship_titanic package runs in CI/CD environment
+      run: python -m spaceship_titanic
+      working-directory: ./src
     - name: pytest using run_tests.sh Bash script by navigating to tests/ directory
       run: bash run_tests.sh
       working-directory: ./tests

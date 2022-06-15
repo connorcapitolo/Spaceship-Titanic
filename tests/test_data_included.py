@@ -8,7 +8,6 @@ import pandas as pd
 
 # my modules
 from spaceship_titanic.features import _helper
-from spaceship_titanic.data import upload_download_gcp
 
 train_relative_path = "../data/raw/train.csv"
 
