@@ -1,6 +1,8 @@
 # [Spaceship Titanic](https://www.kaggle.com/competitions/spaceship-titanic/overview) Exploration and Modeling
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![package testing](https://github.com/connorcapitolo/Spaceship-Titanic/actions/workflows/python-package.yml/badge.svg)
+
 
 Directory structure is based on [CookieCutter Data Science](https://drivendata.github.io/cookiecutter-data-science/)
 
