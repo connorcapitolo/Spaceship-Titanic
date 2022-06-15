@@ -8,9 +8,8 @@ The module loads in the Spaceship Titanic dataframe, performs the necessary prep
 """
 
 # python standard library packages
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 import os
-import sys
 
 # third-party packages
 from prefect import task, Flow
@@ -46,7 +45,9 @@ models.append(("LR", LogisticRegression()))
 models.append(("LDA", LinearDiscriminantAnalysis()))
 models.append(("KNN", KNeighborsClassifier()))
 models.append(("SVM", SVC()))
-models.append(("RF", RandomForestClassifier()))
+models.append(
+    ("RF", RandomForestClassifier(random_state=spaceship_titanic.random_state))
+)
 models.append(("GBM", GradientBoostingClassifier()))
 models.append(("ABM", AdaBoostClassifier()))
 
@@ -83,7 +84,7 @@ def transform_dataset(df: pd.DataFrame) -> Tuple:
         df: the Spaceship Titanic training dataset
 
     Returns:
-        df_dict: a dictionary comprised of the feature columns that will be used for training the models (stored as a value corresponding the 'X' key), and the "Transported" labels (stored as a value within correpsponding to the 'Y' key)
+        Tuple that comprises the train-test split for the features and labels
     """
 
     col_to_conv = ["CryoSleep", "Transported", "VIP"]
@@ -117,12 +118,12 @@ def create_model_output(df: Tuple) -> List:
     In order to perform the k-fold cross validation while avoiding data leakage, need to perform the normalization for each particular fold (fit and normalize the train step, and apply normalization to test step); this is the use of scikit-learn's Pipeline module. After performing the k-fold cross-validation, each result is saved as an element in a list; therefore, we have an outer list comprised of each trained model, and an inner list that contains k accuracy score corresponding to each of the k-folds
 
     Args:
-        df: dictionary that contains the result from the transform_dataset Prefect task
+        df: tuple that contains the result from the transform_dataset Prefect task
 
     Returns:
         A list of lists for each of the results, as outlined in the description above
     """
-    X_train, X_test, y_train, y_test = df
+    X_train, _, y_train, _ = df
 
     results = []
     for name, model in models:
@@ -180,7 +181,7 @@ def save_dataframe(
         SVM,0.7975
     """
 
-    source_model_path = os.path.join("/app", spaceship_titanic.model_folder_name)
+    source_model_path = os.path.join(os.getcwd(), spaceship_titanic.model_folder)
     if not os.path.exists(source_model_path):
         os.mkdir(source_model_path)
 

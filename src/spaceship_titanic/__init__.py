@@ -24,12 +24,12 @@ _cfg = tomllib.loads(resources.read_text("spaceship_titanic", "config.toml"))
 # print(_cfg) # {'data-directory': {'data': '../data', 'data_raw': '../data/raw'}}
 data_dir = _cfg["parent-directory"]["data"]
 data_raw_dir = _cfg["parent-directory"]["data_raw"]
+model_folder = _cfg["parent-directory"]["model_folder"]
 
 n_splits = _cfg["model-parameters"]["n_splits"]
 random_state = _cfg["model-parameters"]["random_state"]
 test_size = _cfg["model-parameters"]["test_size"]
 scoring = _cfg["model-parameters"]["scoring"]
-model_folder_name = _cfg["model-parameters"]["model_folder_name"]
 
 gcp_project = _cfg["gcp-related"]["gcp_project"]
 bucket_name = _cfg["gcp-related"]["bucket_name"]
