@@ -27,12 +27,17 @@ jobs:
           command: |
             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-     # if you "cd" in different runs, each will be relativeto the top-level directory
+     # if you "cd" in different runs, each will be relative to the top-level directory
       - run:
           name: Run Pytest
           command: |
             cd ./tests
             bash run_tests.sh
+      - run:
+          name: Run spaceship_titanic package
+          command: |
+            cd ./src
+            python -m spaceship_titanic
 
 #   Hello-World:
 #     docker:
