@@ -2,7 +2,7 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-[![connorcapitolo](https://circleci.com/gh/connorcapitolo/Spaceship-Titanic.svg?style=svg)](https://app.circleci.com/pipelines/github/connorcapitolo/Spaceship-Titanic?branch=main&filter=all)
+[![connorcapitolo](https://circleci.com/gh/connorcapitolo/Spaceship-Titanic.svg?style=shield)](https://app.circleci.com/pipelines/github/connorcapitolo/Spaceship-Titanic?branch=main&filter=all)
 
 ![package testing](https://github.com/connorcapitolo/Spaceship-Titanic/actions/workflows/python-package.yml/badge.svg)
 
