@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  # running commands on a basic image
+  # this needs to be named build; otherwise, need to create a workflow
   build:
     docker:
       - image: cimg/python:3.10.4
@@ -14,6 +14,9 @@ jobs:
           command: |
             cd ./tests
             ls
+      - run:
+          name: Check Directory
+          command: ls
 
 #   Hello-World:
 #     docker:
