@@ -14,3 +14,4 @@ black
 black[jupyter]
 pre-commit
 tomli
+xgboost

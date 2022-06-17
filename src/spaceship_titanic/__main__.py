@@ -30,6 +30,7 @@ from sklearn.svm import SVC
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from xgboost import XGBClassifier
 
 # my modules
 from spaceship_titanic import _helper
@@ -53,6 +54,7 @@ models.append(
     ("GBM", GradientBoostingClassifier(random_state=spaceship_titanic.random_state))
 )
 models.append(("ABM", AdaBoostClassifier(random_state=spaceship_titanic.random_state)))
+models.append(("XGB", XGBClassifier(random_state=spaceship_titanic.random_state)))
 
 # extract
 @task
