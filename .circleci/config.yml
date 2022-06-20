@@ -1,15 +1,8 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # setting a working directory for different individual steps will be relative to the top-level directory; therefore, we can change the directory to tests/ in one step, and then change the directory to src/ in the next step, with both of these being relative to the top-level directory
-
-
-version: 2.1
-jobs:
-  # this needs to be named build; otherwise, need to create a workflow
-  build:
-    docker:
-      - image: cimg/python:3.10.4
-    steps:
+# source: https://circleci.com/blog/decrease-your-build-times-by-running-jobs-in-parallel-with-workflows/
+aliases:
+    - &run_steps
       - checkout
       - run: 
           name: Python Version
@@ -38,6 +31,73 @@ jobs:
           command: |
             cd ./src
             python -m spaceship_titanic
+
+
+# source: https://github.com/CircleCI-Public/circleci-demo-workflows/blob/parallel-jobs/.circleci/config.yml
+version: 2.1
+jobs:
+  # this needs to be named build; otherwise, need to create a workflow
+  "python-3.8":
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      *run_steps
+    
+  "python-3.9":
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      *run_steps
+
+  "python-3.10":
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      *run_steps
+
+workflows:
+  build:
+    jobs:
+      - "python-3.8"
+      - "python-3.9"
+      - "python-3.10"
+
+# version: 2.1
+# jobs:
+#   # this needs to be named build; otherwise, need to create a workflow
+#   build:
+#     docker:
+#       - image: cimg/python:3.10.4
+#     steps:
+#       - checkout
+#       - run: 
+#           name: Python Version
+#           command: python --version
+#       - run:
+#           name: Install dependencies
+#           command: |
+#             python -m pip install --upgrade pip
+#             python -m pip install flake8 pytest
+#             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#       - run:
+#           name: Lint with flake8
+#           # stop the build if there are Python syntax errors or undefined names
+#           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide 
+#           command: |
+#             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+#             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+#      # if you "cd" in different runs, each will be relative to the top-level directory
+#       - run:
+#           name: Run Pytest
+#           command: |
+#             cd ./tests
+#             bash run_tests.sh
+#       - run:
+#           name: Run spaceship_titanic package
+#           command: |
+#             cd ./src
+#             python -m spaceship_titanic
+
 
 #   Hello-World:
 #     docker:
