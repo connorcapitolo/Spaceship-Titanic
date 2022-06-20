@@ -37,19 +37,19 @@ aliases:
 version: 2.1
 jobs:
   # this needs to be named build; otherwise, need to create a workflow
-  "python-3.8":
+  "python_3-8":
     docker:
       - image: cimg/python:3.8
     steps:
       *run_steps
     
-  "python-3.9":
+  "python_3-9":
     docker:
       - image: cimg/python:3.9
     steps:
       *run_steps
 
-  "python-3.10":
+  "python_3-10":
     docker:
       - image: cimg/python:3.10
     steps:
@@ -58,9 +58,9 @@ jobs:
 workflows:
   build:
     jobs:
-      - "python-3.8"
-      - "python-3.9"
-      - "python-3.10"
+      - "python_3-8"
+      - "python_3-9"
+      - "python_3-10"
 
 # version: 2.1
 # jobs:
