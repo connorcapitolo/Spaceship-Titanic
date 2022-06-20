@@ -55,8 +55,9 @@ jobs:
     steps:
       *run_steps
 
+# this is running jobs concurrently to save time
 workflows:
-  build:
+  build-python-versions:
     jobs:
       - "python_3-8"
       - "python_3-9"
