@@ -31,6 +31,11 @@ aliases:
           command: |
             cd ./src
             python -m spaceship_titanic
+      - run:
+          name: Run spaceship_titanic package with XGBoost only
+          command: |
+            cd ./src
+            python -m spaceship_titanic -xgb
 
 
 # source: https://github.com/CircleCI-Public/circleci-demo-workflows/blob/parallel-jobs/.circleci/config.yml
