@@ -8,6 +8,7 @@ The module loads in the Spaceship Titanic dataframe, performs the necessary prep
 """
 
 # python standard library packages
+from cProfile import label
 from tabnanny import verbose
 from typing import List, Tuple
 import os
@@ -18,6 +19,7 @@ from prefect import task, Flow
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from sklearn import preprocessing
 from sklearn import model_selection
@@ -32,6 +34,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from xgboost import XGBClassifier
+from xgboost import plot_importance
 
 # my modules
 from spaceship_titanic import _helper
@@ -196,6 +199,36 @@ def create_model_output(df: Tuple, xgboost_only: bool) -> Tuple[List, List]:
                 scoring=spaceship_titanic.scoring,
                 n_jobs=-1,
             )
+
+            # cross_val_score first copies your model before fitting the copy, so the original model has not been fitted
+            # source: https://stackoverflow.com/questions/36215700/reusing-model-fitted-by-cross-val-score-in-sklearn-using-joblib
+            model.fit(X_train, y_train)
+            # print(model.feature_importances_)
+
+            _, axes = plt.subplots(nrows=3, ncols=1, figsize=(8, 24))
+            """
+            importance_type (str, default "weight") –
+                How the importance is calculated: either “weight”, “gain”, or “cover”
+                ”weight” is the number of times a feature appears in a tree
+                ”gain” is the average gain of splits which use the feature
+                ”cover” is the average coverage of splits which use the feature where coverage is defined as the number of samples affected by the split
+            https://xgboost.readthedocs.io/en/stable/python/python_api.html
+            """
+            # plt.bar(range(len(model.feature_importances_)),
+            #           model.feature_importances_, tick_label=X_train.columns)
+            importance_types = ["weight", "gain", "cover"]
+            for i, ax in enumerate(axes.ravel()):
+                plot_importance(
+                    model,
+                    ax=ax,
+                    importance_type=importance_types[i],
+                    title=f"Feature importance: {importance_types[i]}",
+                )
+            # by default, adds .png file extension
+            plt.savefig(
+                os.path.join(os.getcwd(), "../reports/figures/xgb_feature_importance")
+            )
+
         # report performance
         print(f"{name}: {cv_results.mean():.4f}, {cv_results.std():.4f}")
         # add scores to the list
