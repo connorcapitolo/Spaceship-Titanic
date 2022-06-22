@@ -30,6 +30,7 @@ n_splits = _cfg["model-parameters"]["n_splits"]
 random_state = _cfg["model-parameters"]["random_state"]
 test_size = _cfg["model-parameters"]["test_size"]
 scoring = _cfg["model-parameters"]["scoring"]
+missing_value_number = _cfg["model-parameters"]["missing_value_number"]
 
 gcp_project = _cfg["gcp-related"]["gcp_project"]
 bucket_name = _cfg["gcp-related"]["bucket_name"]
