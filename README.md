@@ -51,7 +51,13 @@ or
 $ python -m spaceship_titanic -d
 ```
 
-The former utilizes the `data/raw/train.csv` file, while the latter downloads the training dataset from a GCP bucket
+or 
+
+```
+$ python -m spaceship_titanic -xgb
+```
+
+The first one utilizes the `data/raw/train.csv` file, while the second one downloads the training dataset from a GCP bucket, and the third one solely runs [XGBoost](https://xgboost.readthedocs.io/en/stable/) with automatic handling of missing values
 
 ## Testing
 
