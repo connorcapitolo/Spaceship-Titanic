@@ -105,15 +105,6 @@ workflows:
 #             python -m spaceship_titanic
 
 
-#   Hello-World:
-#     docker:
-#       - image: cimg/base:2021.04
-#     steps:
-#       - run:
-#           name: Saying Hello
-#           command: |
-#             echo 'Hello World!'
-#             echo 'This is the delivery pipeline'
 #   # fetching code from the repo
 #   Fetch-Code:
 #     docker:
@@ -137,7 +128,6 @@ workflows:
 # workflows:
 #   Example-Workflow:
 #     jobs:
-#       - Hello-World
 #       - Fetch-Code:
 #           requires:
 #             - Hello-World
