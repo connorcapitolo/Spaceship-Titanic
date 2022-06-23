@@ -13,6 +13,8 @@ aliases:
       #  python3 -m venv venv
       # . venv/bin/activate
       # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # source: https://circleci.com/docs/2.0/caching#restoring-cache
+      # source: https://gist.github.com/eddiewebb/ea07f681688a61d046e42619af31bbe6
       - run: # install and activate virtual environment with pip
           name: Install dependencies
           command: |
