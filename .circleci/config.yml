@@ -8,16 +8,17 @@ aliases:
           name: Python Version
           command: python --version
       - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
-          key: deps1-{{ checksum "requirements.txt" }}
+          key: deps2-{{ checksum "requirements.txt" }}
       # python -m pip install --upgrade pip
       #  python3 -m venv venv
       # . venv/bin/activate
+      # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - run: # install and activate virtual environment with pip
           name: Install dependencies
           command: |
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            pip install -r requirements.txt
       - save_cache:
-          key: deps1-{{ checksum "requirements.txt" }}
+          key: deps2-{{ checksum "requirements.txt" }}
           paths:
             - "~/.cache/pip"
       - run:
