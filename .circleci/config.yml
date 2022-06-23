@@ -42,10 +42,10 @@ version: 2.1
 jobs:
   test:
     parameters:
-      python-version:
+      py:
         type: string
     docker:
-      - image: cimg/<< parameters.python-version >>
+      - image: cimg/python:<< parameters.py >>
     steps:
       *run_steps
 
@@ -55,7 +55,7 @@ workflows:
       - test:
         matrix:
           parameters:
-            python-version: [python:3.8, python:3.9, python:3.10]
+            py: ["3.8", "3.9", "3.10"]
 
 
 
