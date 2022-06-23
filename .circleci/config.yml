@@ -37,49 +37,69 @@ aliases:
             cd ./src
             python -m spaceship_titanic -xgb
 
+executors:
+  python_3-8:
+    docker: 
+      - image: cimg/python:3.8
+  python_3-9:
+    docker:
+      - image: cimg/python:3.9
+  python_3-10:
+    docker:
+      - image: cimg/python:3.10
 
-# Pipeline parameters are declared using the parameters key at the top level of a .circleci/config.yml file
-# source: https://circleci.com/docs/2.0/pipeline-variables#pipeline-parameters-in-configuration
-parameters:
-  py_v1: 
-    type: string
-    default: "python:3.8"
-  py_v2:
-    type: string
-    default: "python:3.9"
-  py_v3:
-    type: string
-    default: "python:3.10" 
 
-# source: https://github.com/CircleCI-Public/circleci-demo-workflows/blob/parallel-jobs/.circleci/config.yml
 version: 2.1
 jobs:
-  # this needs to be named build; otherwise, need to create a workflow
-  << pipeline.parameters.py_v1 >>:
-    docker:
-      - image: cimg/<< pipeline.parameters.py_v1 >>
-    steps:
-      *run_steps
-    
-  << pipeline.parameters.py_v2 >>:
-    docker:
-      - image: cimg/<< pipeline.parameters.py_v2 >>
+  test:
+    parameters:
+      os:
+        type: executor
+    executor: << parameters.os >>
     steps:
       *run_steps
 
-  << pipeline.parameters.py_v3 >>:
-    docker:
-      - image: cimg/<< pipeline.parameters.py_v3 >>
-    steps:
-      *run_steps
-
-# this is running jobs concurrently to save time
 workflows:
   build-python-versions:
     jobs:
-      - << pipeline.parameters.py_v1 >>
-      - << pipeline.parameters.py_v2 >>
-      - << pipeline.parameters.py_v3 >>
+      - test:
+        matrix:
+          parameters:
+            os: [python_3-8, python_3-9, python_3-10]
+
+
+
+
+
+
+# source: https://github.com/CircleCI-Public/circleci-demo-workflows/blob/parallel-jobs/.circleci/config.yml
+# jobs:
+#   # this needs to be named build; otherwise, need to create a workflow
+#   "python_3-8":
+#     docker:
+#       - image: cimg/python:3.8
+#     steps:
+#       *run_steps
+    
+#   "python_3-9":
+#     docker:
+#       - image: cimg/python:3.9
+#     steps:
+#       *run_steps
+
+#   "python_3-10":
+#     docker:
+#       - image: cimg/python:3.10
+#     steps:
+#       *run_steps
+
+# # this is running jobs concurrently to save time
+# workflows:
+#   build-python-versions:
+#     jobs:
+#       - "python_3-8"
+#       - "python_3-9"
+#       - "python_3-10"
 
 # version: 2.1
 # jobs:
@@ -118,6 +138,15 @@ workflows:
 #             python -m spaceship_titanic
 
 
+#   Hello-World:
+#     docker:
+#       - image: cimg/base:2021.04
+#     steps:
+#       - run:
+#           name: Saying Hello
+#           command: |
+#             echo 'Hello World!'
+#             echo 'This is the delivery pipeline'
 #   # fetching code from the repo
 #   Fetch-Code:
 #     docker:
@@ -141,6 +170,7 @@ workflows:
 # workflows:
 #   Example-Workflow:
 #     jobs:
+#       - Hello-World
 #       - Fetch-Code:
 #           requires:
 #             - Hello-World
