@@ -21,8 +21,9 @@ aliases:
       #       pip install -r requirements.txt
       - run: # install and activate virtual environment with pip
           command: |
-            python3 -m venv venv
+            python -m venv venv
             source venv/bin/activate
+            python -m pip install --upgrade pip
             pip install -r requirements.txt
       - save_cache:
           key: deps1-{{ checksum "requirements.txt" }}
@@ -35,7 +36,7 @@ aliases:
           # stop the build if there are Python syntax errors or undefined names
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide 
           command: |
-            sourc venv/bin/activate
+            source venv/bin/activate
             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
      # if you "cd" in different runs, each will be relative to the top-level directory
