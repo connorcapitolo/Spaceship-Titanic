@@ -37,25 +37,15 @@ aliases:
             cd ./src
             python -m spaceship_titanic -xgb
 
-executors:
-  python_3-8:
-    docker: 
-      - image: cimg/python:3.8
-  python_3-9:
-    docker:
-      - image: cimg/python:3.9
-  python_3-10:
-    docker:
-      - image: cimg/python:3.10
-
 
 version: 2.1
 jobs:
   test:
     parameters:
-      os:
-        type: executor
-    executor: << parameters.os >>
+      python-version:
+        type: string
+    docker:
+      - image: cimg/<< parameters.python-version >>
     steps:
       *run_steps
 
@@ -65,7 +55,7 @@ workflows:
       - test:
         matrix:
           parameters:
-            os: [python_3-8, python_3-9, python_3-10]
+            python-version: [python:3.8, python:3.9, python:3.10]
 
 
 
