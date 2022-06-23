@@ -10,17 +10,16 @@ aliases:
       - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
           key: deps1-{{ checksum "requirements.txt" }}
       # python -m pip install --upgrade pip
-      # # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      #  python3 -m venv venv
+      # . venv/bin/activate
       - run: # install and activate virtual environment with pip
           name: Install dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - save_cache:
           key: deps1-{{ checksum "requirements.txt" }}
           paths:
-            - "venv"
+            - "~/.cache/pip"
       - run:
           name: Lint with flake8
           # stop the build if there are Python syntax errors or undefined names
