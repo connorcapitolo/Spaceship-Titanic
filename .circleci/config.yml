@@ -22,7 +22,7 @@ aliases:
       - save_cache:
           key: deps2-{{ checksum "requirements.txt" }}
           paths:
-            - "~/.cache/pip"
+            - "~/.cache/pip" # default cache directory for pip with Unix systems
       - run:
           name: Lint with flake8
           # stop the build if there are Python syntax errors or undefined names
