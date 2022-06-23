@@ -49,6 +49,9 @@ jobs:
     steps:
       *run_steps
 
+# matrix jobs: https://circleci.com/docs/2.0/using-matrix-jobs
+# matrix jobs: https://circleci.com/blog/circleci-matrix-jobs/
+# passing parameters to jobs: https://circleci.com/docs/2.0/jobs-steps#passing-parameters-to-jobs
 workflows:
   build-python-versions:
     jobs:
