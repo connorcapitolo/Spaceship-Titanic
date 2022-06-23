@@ -25,26 +25,22 @@ aliases:
           # stop the build if there are Python syntax errors or undefined names
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide 
           command: |
-            . venv/bin/activate
             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
      # if you "cd" in different runs, each will be relative to the top-level directory
       - run:
           name: Run Pytest
           command: |
-            . venv/bin/activate
             cd ./tests
             bash run_tests.sh
       - run:
           name: Run spaceship_titanic package
           command: |
-            . venv/bin/activate
             cd ./src
             python -m spaceship_titanic
       - run:
           name: Run spaceship_titanic package with XGBoost only
           command: |
-            . venv/bin/activate
             cd ./src
             python -m spaceship_titanic -xgb
 
