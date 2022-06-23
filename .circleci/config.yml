@@ -3,16 +3,24 @@
 # source: https://circleci.com/blog/decrease-your-build-times-by-running-jobs-in-parallel-with-workflows/
 aliases:
     - &run_steps
-      - checkout
+      - checkout # pulls source code to the working directory
       - run: 
           name: Python Version
           command: python --version
-      - run:
+      - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
+          key: deps1-{{ checksum "requirements.txt" }}
+      # python -m pip install --upgrade pip
+      # # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - run: # install and activate virtual environment with pip
           name: Install dependencies
           command: |
-            python -m pip install --upgrade pip
-            python -m pip install flake8 pytest
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: deps1-{{ checksum "requirements.txt" }}
+          paths:
+            - "venv"
       - run:
           name: Lint with flake8
           # stop the build if there are Python syntax errors or undefined names
@@ -46,7 +54,7 @@ jobs:
         type: string
     docker:
       - image: cimg/python:<< parameters.py >>
-    steps:
+    steps: # a collection of executable commands making up the 'build' job
       *run_steps
 
 # matrix jobs: https://circleci.com/docs/2.0/using-matrix-jobs
@@ -58,7 +66,7 @@ workflows:
       - test:
           matrix:
             parameters:
-              py: ["3.8", "3.9", "3.10"]
+              py: ["3.9", "3.10"]
 
 
 

@@ -2,6 +2,7 @@
 # source: https://pip.pypa.io/en/stable/user_guide/#requirements-files
 # source: https://pip.pypa.io/en/stable/reference/requirements-file-format/#requirements-file-format
 pytest
+flake8
 pandas
 numpy
 matplotlib
