@@ -8,18 +8,21 @@ aliases:
           name: Python Version
           command: python --version
       - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
-          key: deps2-{{ checksum "requirements.txt" }}
+          key: deps1-{{ checksum "requirements.txt" }}
       # source: https://circleci.com/docs/2.0/caching#restoring-cache
       # source: https://gist.github.com/eddiewebb/ea07f681688a61d046e42619af31bbe6
-      - run: # install and activate virtual environment with pip
+      # source: https://circleci.com/docs/2.0/caching-strategy#pip-python
+      # source: https://pipenv-fork.readthedocs.io/en/latest/diagnose.html
+      - run: # install pipenv and the deterministic builds
           name: Install dependencies
           command: |
-            python -m pip install --upgrade pip
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            python -m pip install --upgrade pip && pip install pipenv
+            pipenv lock
+            pipenv install --system --deploy
       - save_cache:
-          key: deps2-{{ checksum "requirements.txt" }}
+          key: deps1-{{ checksum "requirements.txt" }}
           paths:
-            - "~/.cache/pip" # default cache directory for pip with Unix systems
+            - "~/.cache/pipenv" # default cache directory for pipenv with Unix systems
       - run:
           name: Lint with flake8
           # stop the build if there are Python syntax errors or undefined names
