@@ -31,7 +31,7 @@ aliases:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           # pipenv run will run a given command from the virtualenv, with any arguments forwarded 
           command: |
-            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+            pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
             pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
      # if you "cd" in different runs, each will be relative to the top-level directory
       # - run:
@@ -49,6 +49,52 @@ aliases:
           command: |
             cd ./src
             pipenv run python -m spaceship_titanic -xgb
+
+
+# this was using just pip rather than pipenv; this was considerably faster and allowed for running Pytest
+
+# aliases:
+#     - &run_steps
+#       - checkout # pulls source code to the working directory
+#       - run: 
+#           name: Python Version
+#           command: python --version
+#       - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
+#           key: deps2-{{ checksum "requirements.txt" }}
+#       # source: https://circleci.com/docs/2.0/caching#restoring-cache
+#       # source: https://gist.github.com/eddiewebb/ea07f681688a61d046e42619af31bbe6
+#       - run: # install and activate virtual environment with pip
+#           name: Install dependencies
+#           command: |
+#             python -m pip install --upgrade pip
+#             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#       - save_cache:
+#           key: deps2-{{ checksum "requirements.txt" }}
+#           paths:
+#             - "~/.cache/pip" # default cache directory for pip with Unix systems
+#       - run:
+#           name: Lint with flake8
+#           # stop the build if there are Python syntax errors or undefined names
+#           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide 
+#           command: |
+#             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+#             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+#      # if you "cd" in different runs, each will be relative to the top-level directory
+#       - run:
+#           name: Run Pytest
+#           command: |
+#             cd ./tests
+#             bash run_tests.sh
+#       - run:
+#           name: Run spaceship_titanic package
+#           command: |
+#             cd ./src
+#             python -m spaceship_titanic
+#       - run:
+#           name: Run spaceship_titanic package with XGBoost only
+#           command: |
+#             cd ./src
+#             python -m spaceship_titanic -xgb
 
 
 version: 2.1
