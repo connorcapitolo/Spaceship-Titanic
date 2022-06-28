@@ -18,7 +18,7 @@ aliases:
           command: |
             ls -al
             python -m pip install --upgrade pip && pip install pipenv
-            pipenv install --system --deploy
+            pipenv install --deploy
       - save_cache:
           key: deps1-{{ checksum "requirements.txt" }}
           paths:
