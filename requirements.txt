@@ -10,6 +10,7 @@ scikit-learn
 seaborn
 google-cloud-storage
 prefect
+prefect[viz]
 # Black can be installed by running pip install black. It requires Python 3.6.2+ to run. If you want to format Jupyter Notebooks, install with pip install black[jupyter]
 black
 black[jupyter]

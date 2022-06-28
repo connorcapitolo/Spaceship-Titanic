@@ -9,14 +9,25 @@ FROM jupyter/minimal-notebook:latest as base
 LABEL maintainer="Connor Capitolo <connorcapitolo@yahoo.com>" \
       description="Playing around with Spaceship Titanic dataset"
 
+# Python wants UTF-8 locale
+# source: AC215 Mushroom App - api-service/Dockerfile
+ENV LANG=C.UTF-8
+
+# Tell Python to disable buffering so we don't lose any logs.
+# source: AC215 Mushroom App - api-service/Dockerfile
+ENV PYTHONUNBUFFERED=1
+
 # defines the working directory for the rest of the instructions in the Dockerfile; this adds metadata to the image config
 # in this case, we're creating the app directory in the Docker container and will be performing subsequent commands (as seen below) from that directory
 # source: https://dockerlabs.collabnix.com/beginners/dockerfile/WORKDIR_instruction.html
 WORKDIR /app
 
 # COPY is similar to ADD, but it focuses solely on source files (doesn't inlude URLs or untarring)
-COPY requirements.txt /app/
+# source: AC215 Mushroom App - api-service/Dockerfile
+COPY Pipfile Pipfile.lock /app/
 
+RUN pip install --no-cache-dir --upgrade pip && \
+      pip install pipenv
 
 # this is the equivalent of an if-else for the Dockerfile using build stages
 FROM base as branch-version-no-viz
@@ -33,9 +44,14 @@ FROM branch-version-${BUILD_VERSION} AS final
 # && will run the next pip command if the previous one finished successfully
 # would typically need to "RUN pre-commit install", but since we've mounted the local path, this only needs to be done the first time (could set up a check to see if this is done)
 # source: https://stackoverflow.com/questions/68754821/how-to-pre-install-pre-commit-into-hooks-into-docker
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt && pip install "prefect[viz]"
+# RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt && pip install "prefect[viz]"
 
-# Add source code
+# install packages exactly as specified in Pipfile.lock using the sync command
+# source: https://pipenv.pypa.io/en/latest/advanced/#using-pipenv-for-deployments
+RUN pipenv install --system --deploy
+
+
+# copy source code
 # you're adding the current directory on your PC (the spaceship-titanic/ folder) to the app/ folder in the Docker container
-# Add the rest of the source code. This is done last so we don't invalidate all layers when we change a line of code.
-ADD . /app
+# Copy the rest of the source code. This is done last so we don't invalidate all layers when we change a line of code.
+COPY . /app
