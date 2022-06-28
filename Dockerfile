@@ -46,8 +46,9 @@ FROM branch-version-${BUILD_VERSION} AS final
 # source: https://stackoverflow.com/questions/68754821/how-to-pre-install-pre-commit-into-hooks-into-docker
 # RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt && pip install "prefect[viz]"
 
-# install packages exactly as specified in Pipfile.lock using the sync command
-# source: https://pipenv.pypa.io/en/latest/advanced/#using-pipenv-for-deployments
+# --system: This tells pipenv that rather than create a virtualenv with our installed packages, we should install them directly in the the container’s system python.
+# --deploy flag tells pipenv to blow up if the lock file is out of date. That is, if the requirements specified in the Pipfile no longer align with the hashes specified in the lock file.\
+# source: https://jonathanmeier.io/using-pipenv-with-docker/
 RUN pipenv install --system --deploy
 
 
