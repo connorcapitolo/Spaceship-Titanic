@@ -40,14 +40,14 @@ aliases:
       - run:
           name: Run spaceship_titanic package
           command: |
-            bash run_spaceship_titanic_package.sh
+            bash run_spaceship_titanic.sh
       - run:
           name: Run spaceship_titanic package with XGBoost only
           command: |
             bash run_spaceship_titanic_xgboost_only.sh
 
 
-# this was using just pip rather than pipenv; this was considerably faster and allowed for running Pytest
+# this was using just pip rather than pipenv; was about 20-30 seconds faster, but this may be due to poor caching with pipenv
 
 # aliases:
 #     - &run_steps
