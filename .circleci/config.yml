@@ -18,9 +18,8 @@ aliases:
       - run: # install pipenv and the deterministic builds
           name: Install dependencies
           command: |
-            python -m pip install --upgrade pip && pip install pipenv
-            pipenv lock
-            pipenv install
+            pip install --no-cache-dir --upgrade pip && pip install pipenv
+            pipenv sync
       - save_cache:
           key: deps1-{{ checksum "requirements.txt" }}
           paths:
@@ -34,21 +33,18 @@ aliases:
             pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
             pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
      # if you "cd" in different runs, each will be relative to the top-level directory
-      # - run:
-      #     name: Run Pytest
-      #     command: |
-      #       cd ./tests
-      #       bash run_tests.sh
+      - run:
+          name: Run Pytest
+          command: |
+            bash run_test_suite.sh
       - run:
           name: Run spaceship_titanic package
           command: |
-            cd ./src
-            pipenv run python -m spaceship_titanic
+            bash run_spaceship_titanic_package.sh
       - run:
           name: Run spaceship_titanic package with XGBoost only
           command: |
-            cd ./src
-            pipenv run python -m spaceship_titanic -xgb
+            bash run_spaceship_titanic_xgboost_only.sh
 
 
 # this was using just pip rather than pipenv; this was considerably faster and allowed for running Pytest

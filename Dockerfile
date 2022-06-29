@@ -49,7 +49,10 @@ FROM branch-version-${BUILD_VERSION} AS final
 # --system: This tells pipenv that rather than create a virtualenv with our installed packages, we should install them directly in the the container’s system python.
 # --deploy flag tells pipenv to blow up if the lock file is out of date. That is, if the requirements specified in the Pipfile no longer align with the hashes specified in the lock file.\
 # source: https://jonathanmeier.io/using-pipenv-with-docker/
-RUN pipenv install --system --deploy
+# RUN pipenv install --system --deploy
+
+# install packages exactly as specified in Pipfile.lock
+RUN pipenv sync
 
 
 # copy source code
