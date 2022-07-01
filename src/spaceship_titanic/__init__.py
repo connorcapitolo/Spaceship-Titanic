@@ -1,3 +1,8 @@
+"""
+Initializing variables from config.toml, and making imports easier for __main__.py
+
+"""
+
 # python standard library modules
 from importlib import resources
 

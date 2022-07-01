@@ -4,12 +4,10 @@ The module loads in the Spaceship Titanic dataframe, performs the necessary prep
 
     Typical usage example from JupyterLab's Terminal within the src/ folder:
 
-    $ python -m spaceship_titanic
+    $ pipenv run python -m spaceship_titanic
 """
 
 # python standard library packages
-from cProfile import label
-from tabnanny import verbose
 from typing import List, Tuple
 import os
 import argparse
@@ -33,6 +31,7 @@ from sklearn.svm import SVC
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
 from xgboost import XGBClassifier
 from xgboost import plot_importance
 
@@ -41,8 +40,7 @@ from spaceship_titanic import _helper
 from spaceship_titanic import upload_download_gcp
 import spaceship_titanic
 
-# print(spaceship_titanic.hello)
-# print(upload_download_gcp.bucket_name) bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
+# print(upload_download_gcp.bucket_name) # bucket_name is a global variable within the upload_download_gcp file that can be accessed through dot notation (it's in a different namespace than the prefect_etl.py module)
 
 
 # extract

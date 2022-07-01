@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+"""
+Testing based on the train.csv that is saved within the directory
+
+"""
 
 # python standard library
 import os

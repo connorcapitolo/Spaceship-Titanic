@@ -12,6 +12,9 @@ tests=(
 # pwd -P: Print the current directory, and resolve all symlinks (i.e. show the "physical" path)
 export PYTHONPATH="$(pwd -P)/../src":${PYTHONPATH}
 
+# look up how to pass an argument to pytest
+# both .py files use 'train_relative_path = "../data/raw/train.csv"'
+
 # if we call "bash run_tests.sh include" from Terminal, then will run both tests
 # if we call "bash run_tests.sh" from Terminal, will only run test with the data included
 if [ $# -ge 1 ]; then

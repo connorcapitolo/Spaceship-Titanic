@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+"""
+Testing based on the downloading from GCS bucket
+
+"""
 
 # python standard library
 import os

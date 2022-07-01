@@ -14,7 +14,7 @@ aliases:
       # source: https://circleci.com/docs/2.0/caching-strategy#pip-python
       # source: https://pipenv-fork.readthedocs.io/en/latest/diagnose.html
       # source: https://gist.github.com/toransahu/c9769fb1e645fbf17635e1b49f4c5d95
-      # When no parameters are passed to install, all packages [packages] specified will be installed
+      # can perform better caching by placing the virtual environment in the current directory and caching from there
       - run: # install pipenv and the deterministic builds
           name: Install dependencies
           command: |
@@ -118,9 +118,10 @@ workflows:
 
 
 
-
+# below is the initial iteration of workflows before using matrix jobs
 
 # source: https://github.com/CircleCI-Public/circleci-demo-workflows/blob/parallel-jobs/.circleci/config.yml
+# source: https://circleci.com/docs/2.0/config-intro
 # jobs:
 #   # this needs to be named build; otherwise, need to create a workflow
 #   "python_3-8":
@@ -148,80 +149,3 @@ workflows:
 #       - "python_3-8"
 #       - "python_3-9"
 #       - "python_3-10"
-
-# version: 2.1
-# jobs:
-#   # this needs to be named build; otherwise, need to create a workflow
-#   build:
-#     docker:
-#       - image: cimg/python:3.10.4
-#     steps:
-#       - checkout
-#       - run: 
-#           name: Python Version
-#           command: python --version
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             python -m pip install --upgrade pip
-#             python -m pip install flake8 pytest
-#             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-#       - run:
-#           name: Lint with flake8
-#           # stop the build if there are Python syntax errors or undefined names
-#           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide 
-#           command: |
-#             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-#             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-#      # if you "cd" in different runs, each will be relative to the top-level directory
-#       - run:
-#           name: Run Pytest
-#           command: |
-#             cd ./tests
-#             bash run_tests.sh
-#       - run:
-#           name: Run spaceship_titanic package
-#           command: |
-#             cd ./src
-#             python -m spaceship_titanic
-
-
-#   Hello-World:
-#     docker:
-#       - image: cimg/base:2021.04
-#     steps:
-#       - run:
-#           name: Saying Hello
-#           command: |
-#             echo 'Hello World!'
-#             echo 'This is the delivery pipeline'
-#   # fetching code from the repo
-#   Fetch-Code:
-#     docker:
-#       - image: cimg/base:2021.04
-#     steps:
-#       - checkout
-#       - run:
-#           name: Getting the Code
-#           command: |
-#             ls -al
-#             echo '^^^Your repo files^^^'
-#   # running a node container
-#   Using-Node:
-#     docker:
-#       - image: cimg/node:17.2
-#     steps:
-#       - run:
-#           name: Running the Node Container
-#           command: |
-#             node -v
-# workflows:
-#   Example-Workflow:
-#     jobs:
-#       - Hello-World
-#       - Fetch-Code:
-#           requires:
-#             - Hello-World
-#       - Using-Node:
-#           requires:
-#             - Fetch-Code
